@@ -1,0 +1,48 @@
+Business Source License 1.1
+
+Licensor:             xpntl
+Licensed Work:        xpntl
+                      Copyright (c) 2026 xpntl. All rights reserved.
+Additional Use Grant: You may make production use of the Licensed Work only
+                      with a valid xpntl license key. Free-tier license keys
+                      are available at no cost. This grant does not permit
+                      offering the Licensed Work to third parties as a hosted
+                      or managed service that competes with xpntl's commercial
+                      offerings.
+Change Date:          Four years from the date each version of the Licensed
+                      Work is first published.
+Change License:       Apache License, Version 2.0
+
+-----------------------------------------------------------------------------
+
+The Licensed Work is made available under the Business Source License 1.1
+(the "License"), as published by MariaDB Corporation Ab. The full and
+canonical text of the License is available at:
+
+    https://mariadb.com/bsl11
+
+That text governs your use of the Licensed Work together with the Parameters
+set out above, and is incorporated into this file by reference. "Business
+Source License" is a trademark of MariaDB Corporation Ab.
+
+Plain-language summary (informational only; the canonical License text above
+governs in case of any conflict):
+
+  * You may copy, modify, create derivative works of, redistribute, and make
+    non-production use of the Licensed Work.
+  * Production use is permitted only under the Additional Use Grant above, or
+    under a separate commercial license from the Licensor.
+  * On the Change Date, the applicable version of the Licensed Work converts
+    to the Change License (Apache License, Version 2.0).
+  * The Licensed Work is provided on an "AS IS" basis, without warranties or
+    conditions of any kind, to the maximum extent permitted by law.
+
+For commercial or alternative licensing, contact: legal@xpntl.dev
+
+-----------------------------------------------------------------------------
+
+Notice
+
+  This software is subject to the terms of the Business Source License 1.1.
+  The License Parameters are set out above; the full License text is available
+  at https://mariadb.com/bsl11.

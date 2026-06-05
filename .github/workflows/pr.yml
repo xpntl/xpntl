@@ -1,0 +1,50 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Required gate: typecheck the deployable surface + run unit tests. These are
+  # green today, so they can block merges. (Full repo lint + mobile typecheck
+  # are tracked as separate cleanup tickets before they become required.)
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # @xpntl/mcp is the one workspace package consumed via its built ./dist
+      # exports (api imports `@xpntl/mcp/mount`), so it must be built before the
+      # api typecheck can resolve it — exactly as the prod Dockerfile does. The
+      # other packages are consumed as TS source and need no build.
+      - name: Build @xpntl/mcp
+        run: pnpm --filter @xpntl/mcp run build
+      - name: Typecheck (api, domain, web)
+        run: pnpm --filter @xpntl/api --filter @xpntl/domain --filter @xpntl/web typecheck
+      - name: Test (api, domain)
+        run: pnpm --filter @xpntl/api --filter @xpntl/domain test
+
+  # Advisory: lint only the files changed in this PR. Non-blocking for now while
+  # the repo-wide format/lint cleanup is pending; surfaces issues in review.
+  lint:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Lint changed files
+        run: |
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          npx @biomejs/biome check --changed --since="origin/${{ github.base_ref }}"

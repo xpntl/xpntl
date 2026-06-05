@@ -1,0 +1,415 @@
+@import "tailwindcss";
+@source "../node_modules/@xpntl/ui/src";
+
+/* Map xpntl design tokens to Tailwind v4 utilities. Allows:
+   bg-xp-surface, text-xp-ink, border-xp-border, etc. */
+@theme {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  --color-xp-canvas: var(--xp-canvas);
+  --color-xp-surface: var(--xp-surface);
+  --color-xp-layer: var(--xp-layer);
+  --color-xp-overlay: var(--xp-overlay);
+  --color-xp-ink: var(--xp-ink);
+  --color-xp-muted: var(--xp-muted);
+  --color-xp-faint: var(--xp-faint);
+  --color-xp-border: var(--xp-border);
+  --color-xp-hairline: var(--xp-hairline);
+  --color-xp-input: var(--xp-input);
+  --color-xp-accent: var(--xp-accent);
+  --color-xp-accent-strong: var(--xp-accent-strong);
+  --color-xp-accent-fg: var(--xp-accent-fg);
+  --color-xp-accent-tint: var(--xp-accent-tint);
+  --color-xp-success: var(--xp-success);
+  --color-xp-danger: var(--xp-danger);
+  --color-xp-warn: var(--xp-warn);
+  --color-xp-info: var(--xp-info);
+
+  --font-mono: var(--xp-font-mono);
+
+  --shadow-xp-0: var(--xp-shadow-0);
+  --shadow-xp-1: var(--xp-shadow-1);
+  --shadow-xp-2: var(--xp-shadow-2);
+  --shadow-xp-3: var(--xp-shadow-3);
+  --shadow-xp-inset: var(--xp-shadow-inset);
+
+  --radius-xp-0: var(--xp-r-0);
+  --radius-xp-sm: var(--xp-r-sm);
+  --radius-xp-md: var(--xp-r-md);
+  --radius-xp-lg: var(--xp-r-lg);
+  --radius-xp-pill: var(--xp-r-pill);
+
+  --animate-xp-fade-in: xp-fade-in var(--xp-dur-base) var(--xp-ease);
+  --animate-xp-fade-out: xp-fade-out var(--xp-dur-base) var(--xp-ease);
+  --animate-xp-scale-in: xp-scale-in var(--xp-dur-base) var(--xp-ease);
+  --animate-xp-scale-out: xp-scale-out var(--xp-dur-base) var(--xp-ease);
+  --animate-xp-slide-in-right: xp-slide-in-right var(--xp-dur-slow) var(--xp-ease);
+  --animate-xp-slide-out-right: xp-slide-out-right var(--xp-dur-slow) var(--xp-ease);
+  --animate-xp-slide-in-bottom: xp-slide-in-bottom var(--xp-dur-base) var(--xp-ease);
+  --animate-xp-skel: xp-skel 1.6s linear infinite;
+  --animate-xp-spin: xp-spin 0.9s linear infinite;
+}
+
+/* Radix overlay animation states */
+[data-state="open"] > [data-xp-overlay] { animation: xp-fade-in var(--xp-dur-base) var(--xp-ease); }
+[data-state="closed"] > [data-xp-overlay] { animation: xp-fade-out var(--xp-dur-base) var(--xp-ease); }
+[data-state="open"][data-xp-content] { animation: xp-scale-in var(--xp-dur-base) var(--xp-ease); }
+[data-state="closed"][data-xp-content] { animation: xp-scale-out var(--xp-dur-fast) var(--xp-ease); }
+[data-state="open"][data-xp-slide] { animation: xp-slide-in-right var(--xp-dur-slow) var(--xp-ease); }
+[data-state="closed"][data-xp-slide] { animation: xp-slide-out-right var(--xp-dur-slow) var(--xp-ease); }
+
+@keyframes xp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * PER-110 — Hover affordances on the issue list.
+ *
+ * Each row's editable cells (`data-cell`) and a row-end action group
+ * (`.xp-row-actions`) reveal on hover so users see "this is clickable"
+ * without having to read the keyboard cheat sheet first.
+ *
+ * `prefers-reduced-motion: reduce` skips the transition.
+ * ──────────────────────────────────────────────────────────── */
+
+[data-cell] {
+  border-radius: var(--xp-r-sm);
+  transition: background-color 120ms var(--xp-ease, ease-out);
+}
+[data-cell]:hover {
+  background: var(--xp-layer);
+  outline: 1px dashed var(--xp-hairline);
+  outline-offset: 1px;
+}
+
+.xp-row-actions {
+  opacity: 0;
+  transition: opacity 120ms var(--xp-ease, ease-out);
+  pointer-events: none;
+}
+[data-issue-id]:hover .xp-row-actions,
+[data-issue-id]:focus-within .xp-row-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-cell],
+  .xp-row-actions {
+    transition: none;
+  }
+}
+
+.xp-row-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--xp-r-sm);
+  background: transparent;
+  color: var(--xp-muted);
+  font-family: var(--xp-font-mono);
+  font-size: 13px;
+  cursor: pointer;
+  line-height: 1;
+}
+.xp-row-action-btn:hover {
+  border-color: var(--xp-border);
+  color: var(--xp-ink);
+  background: var(--xp-surface);
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * PER-55 — Kanban board affordances.
+ * ──────────────────────────────────────────────────────────── */
+
+[data-drag-over] {
+  outline: 2px dashed var(--xp-accent-strong);
+  outline-offset: -2px;
+}
+
+.xp-kanban-card {
+  transition: box-shadow 120ms var(--xp-ease, ease-out);
+}
+.xp-kanban-card:hover {
+  box-shadow: var(--xp-shadow-sm, 0 1px 3px rgba(0,0,0,.08));
+}
+.xp-kanban-card:active {
+  opacity: 0.7;
+  cursor: grabbing;
+}
+
+.xp-kanban-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--xp-muted) transparent;
+}
+.xp-kanban-scroll section:hover .xp-col-collapse {
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-kanban-card {
+    transition: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * TipTap rich-text editor styles.
+ * ──────────────────────────────────────────────────────────── */
+
+.tiptap {
+  outline: none;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--xp-muted);
+  pointer-events: none;
+  height: 0;
+}
+
+.tiptap h1 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0.6em 0 0.3em;
+  line-height: 1.2;
+}
+
+.tiptap h2 {
+  font-size: 1.25em;
+  font-weight: 650;
+  margin: 0.5em 0 0.25em;
+  line-height: 1.25;
+}
+
+.tiptap h3 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 0.4em 0 0.2em;
+  line-height: 1.3;
+}
+
+.tiptap p {
+  margin: 0.3em 0;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.4em;
+  margin: 0.3em 0;
+}
+
+.tiptap li {
+  margin: 0.15em 0;
+}
+
+.tiptap ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tiptap ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.tiptap ul[data-type="taskList"] li > label {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.tiptap ul[data-type="taskList"] li > label input[type="checkbox"] {
+  accent-color: var(--xp-accent-strong);
+  cursor: pointer;
+}
+
+.tiptap ul[data-type="taskList"] li > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.tiptap blockquote {
+  border-left: 3px solid var(--xp-border);
+  padding-left: 14px;
+  margin: 0.5em 0;
+  color: var(--xp-muted);
+  font-style: italic;
+}
+
+.tiptap code {
+  background: var(--xp-layer, rgba(255,255,255,0.06));
+  border-radius: var(--xp-r-sm, 3px);
+  padding: 2px 5px;
+  font-family: var(--xp-font-mono);
+  font-size: 0.88em;
+}
+
+.tiptap pre {
+  background: var(--xp-layer, rgba(255,255,255,0.04));
+  border: 1px solid var(--xp-hairline);
+  border-radius: var(--xp-r-md, 6px);
+  padding: 14px 16px;
+  margin: 0.5em 0;
+  overflow-x: auto;
+  font-family: var(--xp-font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.tiptap pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+.tiptap hr {
+  border: 0;
+  border-top: 1px solid var(--xp-hairline);
+  margin: 1em 0;
+}
+
+.tiptap a {
+  color: var(--xp-accent-strong);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  cursor: pointer;
+}
+
+.tiptap table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.5em 0;
+}
+
+.tiptap table td,
+.tiptap table th {
+  border: 1px solid var(--xp-border);
+  padding: 6px 10px;
+  font-size: 12px;
+  min-width: 60px;
+}
+
+.tiptap table th {
+  background: var(--xp-layer, rgba(255,255,255,0.04));
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Issue reference auto-links (KEY-123 pattern) */
+.tiptap a.xp-issue-ref,
+a.xp-issue-ref {
+  font-family: var(--xp-font-mono);
+  color: var(--xp-accent-strong);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--xp-accent-strong);
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+.tiptap a.xp-issue-ref:hover,
+a.xp-issue-ref:hover {
+  border-bottom-style: solid;
+}
+
+/* Syntax highlighting tokens (lowlight) */
+.tiptap .hljs-keyword,
+.tiptap .hljs-selector-tag { color: #c678dd; }
+.tiptap .hljs-string,
+.tiptap .hljs-attr { color: #98c379; }
+.tiptap .hljs-number,
+.tiptap .hljs-literal { color: #d19a66; }
+.tiptap .hljs-comment { color: var(--xp-muted); font-style: italic; }
+.tiptap .hljs-built_in { color: #e5c07b; }
+.tiptap .hljs-function .hljs-title { color: #61afef; }
+.tiptap .hljs-tag { color: #e06c75; }
+
+/* @mention chips */
+.xp-mention {
+  display: inline;
+  background: var(--xp-layer, rgba(255,255,255,0.08));
+  border: 1px solid var(--xp-border, #3f3f46);
+  border-radius: var(--xp-r-sm, 4px);
+  padding: 1px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--xp-accent-strong, #60a5fa);
+  white-space: nowrap;
+  cursor: default;
+  line-height: 1.4;
+}
+
+.xp-mention::before {
+  content: '@';
+}
+
+/* Editable metadata rows in issue detail sidebar */
+.xp-editable-row:hover {
+  background: var(--xp-layer, rgba(255,255,255,0.06));
+}
+
+/* Docs wiki tree (XP-89): row hover + reveal per-row actions on hover only. */
+.xp-doc-row:hover {
+  background: var(--xp-layer, rgba(255,255,255,0.06));
+}
+.xp-doc-add {
+  opacity: 0;
+  transition: opacity 120ms var(--xp-ease, ease-out);
+}
+.xp-doc-row:hover .xp-doc-add {
+  opacity: 1;
+}
+.xp-doc-add:hover {
+  color: var(--xp-ink);
+  background: var(--xp-surface);
+}
+
+/* Shared overview-field control: signals "interactive" at rest, brightens on
+   hover/focus (the parent row carries the click + keyboard handlers). */
+.xp-editable-value {
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.xp-editable-row:hover .xp-editable-value,
+.xp-editable-row:focus-visible .xp-editable-value {
+  border-color: var(--xp-input, var(--xp-ink));
+  background: var(--xp-surface);
+}
+
+.xp-meta-pill-btn:hover {
+  background: var(--xp-layer, rgba(255,255,255,0.06));
+}
+
+/* Thin, theme-aware scrollbars across the app. Firefox honors
+   scrollbar-width/color; WebKit needs the pseudo-elements. The transparent
+   padding-box border makes the thumb read as a slim rounded bar. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--xp-border) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--xp-border);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--xp-muted);
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}

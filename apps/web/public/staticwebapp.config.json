@@ -1,0 +1,20 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/icons/*", "/manifest.webmanifest", "/sw.js", "/favicon.svg"]
+  },
+  "mimeTypes": {
+    ".webmanifest": "application/manifest+json"
+  },
+  "routes": [
+    {
+      "route": "/assets/*",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    }
+  ],
+  "globalHeaders": {
+    "cache-control": "no-cache"
+  }
+}

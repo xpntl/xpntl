@@ -1,0 +1,10 @@
+{
+  "name": "xpntl",
+  "version": "0.1.0",
+  "description": "Coordinate with your human + AI team from Claude Code: read, create, and update xpntl issues, pick up work you've been @mentioned on, and report results — over xpntl's MCP server.",
+  "author": { "name": "xpntl", "url": "https://xpntl.dev" },
+  "homepage": "https://xpntl.dev",
+  "repository": "https://github.com/xpntl/xpntl",
+  "license": "MIT",
+  "keywords": ["mcp", "issue-tracker", "agents", "coordination", "project-management"]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "xpntl",
+  "owner": { "name": "xpntl", "url": "https://xpntl.dev" },
+  "metadata": {
+    "description": "xpntl — the coordination layer for human + AI teams.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "xpntl",
+      "source": "./integrations/claude-code",
+      "description": "Read/create/update xpntl issues, pick up @mentions, and report results from Claude Code over xpntl's MCP server."
+    }
+  ]
+}

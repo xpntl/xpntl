@@ -1,0 +1,344 @@
+@import '@fontsource-variable/jetbrains-mono';
+
+/* ─────────────────────────────────────────────────────────────
+ * xpntl · packages/ui/src/tokens.css
+ *
+ * Canvas → surface → layer (sibling, not nested). OKLch. Themed via
+ * [data-theme="light"|"dark"] on document root. Density mode and
+ * focus-ring style also expressed as root data-attributes so they're
+ * tweakable without a stylesheet swap.
+ *
+ * Spec wedge: SSO is free, forever. Direct shot at Linear and Plane.
+ * ──────────────────────────────────────────────────────────── */
+
+/* ── ROOT — light is the default ───────────────────────────── */
+:root, :root[data-theme="light"] {
+  /* Surfaces */
+  --xp-canvas:   oklch(96.5% 0.006 80);   /* warm off-white, cream-leaning */
+  --xp-surface:  oklch(100%  0     0);    /* pure white card */
+  --xp-layer:    oklch(93.5% 0.006 70);   /* selection / hover surface */
+  --xp-overlay:  oklch(20%   0.015 60 / 0.4);
+
+  /* Ink */
+  --xp-ink:      oklch(20%   0.010 60);
+  --xp-muted:    oklch(48%   0.012 55);
+  --xp-faint:    oklch(54%   0.010 55);
+
+  /* Borders */
+  --xp-border:   oklch(86%   0.008 60);
+  --xp-hairline: oklch(91%   0.006 65);
+  --xp-input:    oklch(82%   0.010 60);
+
+  /* Accent — cadmium yellow. Single hue everywhere; ink used for
+     foreground drawn on accent surfaces (checks, text on yellow bg). */
+  --xp-accent:        oklch(82% 0.18 95);  /* cadmium — fills, swatches, state-fills */
+  --xp-accent-strong: oklch(68% 0.18 95);  /* darkened yellow — AA large text on cream, no mustard */
+  --xp-accent-fg:     oklch(20% 0.010 60); /* always dark on yellow — never white text on accent */
+  --xp-ink-on-accent:  var(--xp-accent-fg); /* alias — referenced by IssuePeek sub-issue buttons */
+  --xp-accent-tint:   oklch(96% 0.04 95);
+
+  /* Primary-button surface — outline by default because cadmium can't carry
+     white text. Dark-enough accent presets (orange, cobalt, signal, moss)
+     override these at runtime to fill with white. */
+  --xp-primary-bg:     transparent;
+  --xp-primary-fg:     var(--xp-accent-strong);
+  --xp-primary-border: var(--xp-accent-strong);
+
+  /* Workflow states */
+  --xp-st-triage:    oklch(55% 0.06 50);
+  --xp-st-backlog:   oklch(50% 0.005 60);
+  --xp-st-unstarted: oklch(58% 0.15 250); /* Ready = blue */
+  --xp-st-started:   var(--xp-accent);    /* yellow = in-flight (Strategy B: stroke uses accent-strong) */
+  --xp-st-review:    oklch(68% 0.17 55);  /* Review = orange */
+  --xp-st-completed: oklch(55% 0.14 145); /* moss-green */
+  --xp-st-canceled:  oklch(55% 0.005 60);
+
+  /* Priorities */
+  --xp-pri-urgent: oklch(55% 0.22 25);    /* red */
+  --xp-pri-high:   oklch(65% 0.18 60);    /* amber — distinct from accent */
+  --xp-pri-normal: oklch(50% 0.012 55);
+  --xp-pri-low:    oklch(54% 0.010 55);
+  --xp-pri-none:   oklch(54% 0.010 55);
+
+  /* Semantic */
+  --xp-success:  oklch(55% 0.14 145);
+  --xp-danger:   oklch(55% 0.22 25);
+  --xp-warn:     oklch(70% 0.16 75);
+  --xp-info:     oklch(62% 0.14 240);
+
+  /* Avatar fallback ramp — 12 desaturated hues. Hash(name) % 12 picks. */
+  --xp-av-1: oklch(56% 0.10 25);
+  --xp-av-2: oklch(58% 0.10 55);
+  --xp-av-3: oklch(58% 0.09 85);
+  --xp-av-4: oklch(58% 0.10 115);
+  --xp-av-5: oklch(54% 0.09 145);
+  --xp-av-6: oklch(54% 0.09 175);
+  --xp-av-7: oklch(54% 0.10 205);
+  --xp-av-8: oklch(54% 0.11 235);
+  --xp-av-9: oklch(54% 0.11 265);
+  --xp-av-10: oklch(54% 0.11 295);
+  --xp-av-11: oklch(54% 0.10 325);
+  --xp-av-12: oklch(54% 0.09 355);
+
+  /* Spacing — 4px base */
+  --xp-s-1:  2px;
+  --xp-s-2:  4px;
+  --xp-s-3:  6px;
+  --xp-s-4:  8px;
+  --xp-s-5:  12px;
+  --xp-s-6:  16px;
+  --xp-s-7:  20px;
+  --xp-s-8:  24px;
+  --xp-s-9:  32px;
+  --xp-s-10: 40px;
+  --xp-s-11: 48px;
+  --xp-s-12: 64px;
+
+  /* Radius — lane A is tight. 0 is the default; 2px for chips/inputs. */
+  --xp-r-0:    0;
+  --xp-r-sm:   2px;
+  --xp-r-md:   3px;
+  --xp-r-lg:   4px;
+  --xp-r-pill: 999px;
+
+  /* Shadows — minimal. Borders do the work. */
+  --xp-shadow-0: none;
+  --xp-shadow-1: 0 1px 0 oklch(0% 0 0 / 0.04);
+  --xp-shadow-2: 0 4px 16px oklch(0% 0 0 / 0.06), 0 1px 2px oklch(0% 0 0 / 0.04);
+  --xp-shadow-3: 0 12px 40px oklch(0% 0 0 / 0.10), 0 2px 6px oklch(0% 0 0 / 0.04);
+  --xp-shadow-inset: inset 0 0 0 1px oklch(0% 0 0 / 0.04);
+
+  /* Type — JetBrains Mono throughout */
+  --xp-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --xp-text-xs:   10px;
+  --xp-text-sm:   11px;
+  --xp-text-md:   12px;
+  --xp-text-base: 13px;
+  --xp-text-lg:   14px;
+  --xp-text-xl:   16px;
+  --xp-text-2xl:  20px;
+  --xp-text-3xl:  26px;
+  --xp-text-4xl:  36px;
+  --xp-text-5xl:  44px;
+
+  /* Tracking — mono needs less, but caps/eyebrows need more */
+  --xp-track-tight: -0.025em;
+  --xp-track-snug:  -0.01em;
+  --xp-track-norm:  0;
+  --xp-track-wide:  0.06em;
+  --xp-track-caps:  0.14em;
+  --xp-track-meta:  0.18em;
+
+  /* Motion — three durations × one curve. No transition-all. */
+  --xp-ease:      cubic-bezier(0.22, 1, 0.36, 1);
+  --xp-dur-fast:  120ms;
+  --xp-dur-base:  180ms;
+  --xp-dur-slow:  240ms;
+
+  /* Dot-grid backdrop — subtler than the bake-off */
+  --xp-grid-dot:  oklch(89% 0.008 60);
+  --xp-grid-size: 12px;
+}
+
+/* ── DARK THEME ────────────────────────────────────────────── */
+:root[data-theme="dark"] {
+  --xp-canvas:   oklch(14% 0.006 60);
+  --xp-surface:  oklch(17% 0.006 55);
+  --xp-layer:    oklch(21% 0.008 55);
+  --xp-overlay:  oklch(0%  0 0 / 0.6);
+
+  --xp-ink:      oklch(94% 0.006 70);
+  --xp-muted:    oklch(60% 0.010 55);
+  --xp-faint:    oklch(50% 0.010 55);
+
+  --xp-border:   oklch(28% 0.008 55);
+  --xp-hairline: oklch(24% 0.006 55);
+  --xp-input:    oklch(32% 0.010 55);
+
+  --xp-accent:        oklch(85% 0.18 95);  /* yellow stays bright in dark mode — reads ~11:1 on near-black */
+  --xp-accent-strong: var(--xp-accent);    /* dark mode: yellow itself works as foreground */
+  --xp-accent-fg:     oklch(20% 0.010 60); /* always dark on yellow — even in dark mode */
+  --xp-accent-tint:   oklch(22% 0.06 95);
+
+  /* Still outline in dark mode — white text on yellow still fails. */
+  --xp-primary-bg:     transparent;
+  --xp-primary-fg:     var(--xp-accent);
+  --xp-primary-border: var(--xp-accent);
+
+  --xp-st-triage:    oklch(60% 0.05 50);
+  --xp-st-backlog:   oklch(55% 0.005 60);
+  --xp-st-unstarted: oklch(66% 0.15 250); /* Ready = blue */
+  --xp-st-started:   var(--xp-accent);
+  --xp-st-review:    oklch(72% 0.16 55);  /* Review = orange */
+  --xp-st-completed: oklch(62% 0.14 145);
+  --xp-st-canceled:  oklch(55% 0.005 60);
+
+  --xp-pri-urgent: oklch(64% 0.20 25);
+  --xp-pri-high:   oklch(72% 0.17 60);
+  --xp-pri-normal: oklch(60% 0.010 55);
+  --xp-pri-low:    oklch(50% 0.010 55);
+  --xp-pri-none:   oklch(50% 0.010 55);
+
+  --xp-success: oklch(62% 0.14 145);
+  --xp-danger:  oklch(64% 0.20 25);
+  --xp-warn:    oklch(72% 0.17 75);
+  --xp-info:    oklch(70% 0.14 240);
+
+  /* Avatar ramp shifts up in lightness on dark to keep contrast */
+  --xp-av-1:  oklch(62% 0.11 25);
+  --xp-av-2:  oklch(64% 0.11 55);
+  --xp-av-3:  oklch(64% 0.10 85);
+  --xp-av-4:  oklch(62% 0.10 115);
+  --xp-av-5:  oklch(60% 0.10 145);
+  --xp-av-6:  oklch(60% 0.10 175);
+  --xp-av-7:  oklch(60% 0.11 205);
+  --xp-av-8:  oklch(60% 0.12 235);
+  --xp-av-9:  oklch(60% 0.12 265);
+  --xp-av-10: oklch(60% 0.12 295);
+  --xp-av-11: oklch(60% 0.11 325);
+  --xp-av-12: oklch(60% 0.10 355);
+
+  --xp-shadow-0: none;
+  --xp-shadow-1: 0 1px 0 oklch(0% 0 0 / 0.3);
+  --xp-shadow-2: 0 4px 18px oklch(0% 0 0 / 0.45), 0 1px 2px oklch(0% 0 0 / 0.3);
+  --xp-shadow-3: 0 16px 48px oklch(0% 0 0 / 0.55), 0 2px 6px oklch(0% 0 0 / 0.3);
+  --xp-shadow-inset: inset 0 0 0 1px oklch(100% 0 0 / 0.03);
+
+  --xp-grid-dot:  oklch(18% 0.008 55);
+}
+
+/* ── DENSITY MODES ─────────────────────────────────────────── */
+/* Compact = default (Linear-tight). Comfortable = looser breathing room. */
+:root, :root[data-density="compact"] {
+  --xp-row-h:       28px;   /* issue list rows */
+  --xp-nav-row-h:   30px;   /* sidebar nav items */
+  --xp-input-h:     30px;
+  --xp-btn-h:       28px;
+  --xp-btn-h-sm:    22px;
+  --xp-pad-x-tight: 8px;
+  --xp-pad-x-cozy:  12px;
+  --xp-pad-y-tight: 6px;
+}
+:root[data-density="comfortable"] {
+  --xp-row-h:       36px;
+  --xp-nav-row-h:   38px;
+  --xp-input-h:     36px;
+  --xp-btn-h:       34px;
+  --xp-btn-h-sm:    26px;
+  --xp-pad-x-tight: 10px;
+  --xp-pad-x-cozy:  14px;
+  --xp-pad-y-tight: 8px;
+}
+
+/* ── FOCUS RING STYLES ─────────────────────────────────────── */
+/* Default: offset. Tweakable to halo / inset / dashed. The ring is a
+   designed feature — it appears intentionally, with deliberate
+   geometry, not as a browser default. */
+:root, :root[data-focus-ring="offset"] {
+  --xp-focus-ring: 0 0 0 2px var(--xp-canvas), 0 0 0 4px var(--xp-accent-strong);
+  --xp-focus-border: var(--xp-input);
+}
+:root[data-focus-ring="halo"] {
+  --xp-focus-ring: 0 0 0 2px var(--xp-accent-strong);
+  --xp-focus-border: var(--xp-accent-strong);
+}
+:root[data-focus-ring="inset"] {
+  --xp-focus-ring: inset 0 0 0 1px var(--xp-accent-strong);
+  --xp-focus-border: var(--xp-accent-strong);
+}
+:root[data-focus-ring="dashed"] {
+  /* Striped border — most distinctive, polarizing */
+  --xp-focus-ring: 0 0 0 1px var(--xp-canvas), 0 0 0 3px var(--xp-accent-strong);
+  --xp-focus-border: var(--xp-accent-strong);
+}
+
+/* ── BASE TYPE ─────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { color-scheme: light dark; }
+
+body {
+  font-family: var(--xp-font-mono);
+  font-size: var(--xp-text-base);
+  line-height: 1.45;
+  background: var(--xp-canvas);
+  color: var(--xp-ink);
+  font-feature-settings: 'tnum' 1, 'ss01' 1, 'cv11' 1, 'calt' 1;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: var(--xp-track-snug);
+}
+
+/* ── UTILITY CLASSES ───────────────────────────────────────── */
+.xp-mono { font-family: var(--xp-font-mono); font-variant-numeric: tabular-nums; }
+.xp-caps {
+  text-transform: uppercase;
+  letter-spacing: var(--xp-track-caps);
+  font-size: var(--xp-text-sm);
+  font-weight: 500;
+}
+.xp-meta {
+  font-size: var(--xp-text-xs);
+  letter-spacing: var(--xp-track-meta);
+  text-transform: uppercase;
+  color: var(--xp-muted);
+  font-weight: 500;
+}
+.xp-muted { color: var(--xp-muted); }
+.xp-faint { color: var(--xp-faint); }
+.xp-accent { color: var(--xp-accent); }
+.xp-tnum { font-variant-numeric: tabular-nums; }
+
+/* Dot-grid backdrop helper — apply to any element */
+.xp-dot-grid {
+  background-image: radial-gradient(circle, var(--xp-grid-dot) 0.7px, transparent 0.8px);
+  background-size: var(--xp-grid-size) var(--xp-grid-size);
+}
+
+/* Hairline rules */
+.xp-rule { height: 1px; background: var(--xp-hairline); border: 0; }
+.xp-rule-dashed {
+  height: 0; border: 0; border-top: 1px dashed var(--xp-border);
+}
+
+/* Hide scrollbars but keep scrolling */
+.xp-scroll::-webkit-scrollbar { display: none; }
+.xp-scroll { scrollbar-width: none; }
+
+/* Keyframes used by Skeleton and Spinner primitives */
+@keyframes xp-skel {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes xp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Overlay enter/exit — used by Radix-backed Dialog, SlideOver, Popover */
+@keyframes xp-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes xp-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes xp-scale-in {
+  from { opacity: 0; transform: scale(0.97) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes xp-scale-out {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to   { opacity: 0; transform: scale(0.97) translateY(4px); }
+}
+@keyframes xp-slide-in-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes xp-slide-out-right {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+@keyframes xp-slide-in-bottom {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

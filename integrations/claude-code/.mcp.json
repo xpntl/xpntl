@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "xpntl": {
+      "type": "http",
+      "url": "https://api.xpntl.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer ${XPNTL_HARNESS_KEY}"
+      }
+    }
+  }
+}

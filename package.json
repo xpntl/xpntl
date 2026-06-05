@@ -1,0 +1,40 @@
+{
+  "name": "xpntl",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The coordination layer for human + AI engineering teams. SSO is free, forever.",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "./dev.sh && turbo run dev",
+    "dev:app": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "biome check .",
+    "format": "biome format . --write",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:web": "pnpm --filter @xpntl/web test",
+    "test:e2e": "playwright test",
+    "db:up": "docker compose -f infra/docker-compose/docker-compose.yml up -d",
+    "db:down": "docker compose -f infra/docker-compose/docker-compose.yml down",
+    "db:logs": "docker compose -f infra/docker-compose/docker-compose.yml logs -f",
+    "db:migrate": "pnpm --filter @xpntl/db migrate:up",
+    "db:migrate:create": "pnpm --filter @xpntl/db migrate:create",
+    "seed:dev": "pnpm --filter @xpntl/db seed:dev",
+    "seed:test": "pnpm --filter @xpntl/db seed:test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.2",
+    "@biomejs/biome": "^1.9.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.6"
+  },
+  "pnpm": {
+    "overrides": {
+      "qs@>=6.11.1 <=6.15.1": ">=6.15.2"
+    }
+  }
+}

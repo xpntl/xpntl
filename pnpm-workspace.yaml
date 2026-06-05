@@ -1,0 +1,5 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  # Native SwiftUI app — not a JS workspace package.
+  - "!apps/ios"

@@ -1,0 +1,16 @@
+**/node_modules
+.git
+.env
+.env.*
+dist
+*.md
+brand-svgs
+apps/web
+apps/worker
+apps/mobile
+packages/ui
+packages/sync-engine
+infra
+.turbo
+.claude
+public-site

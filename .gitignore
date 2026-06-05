@@ -1,0 +1,26 @@
+node_modules
+dist
+build
+.turbo
+*.log
+.env
+.env.local
+.env.*.local
+.DS_Store
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+coverage
+playwright-report
+test-results
+.tauri/target
+**/src-tauri/target
+**/src-tauri/gen
+.playwright-mcp
+
+# data dirs that local docker compose writes into (if any are bind-mounted)
+infra/docker-compose/data
+.pnpm-store/
+.claude/
+apps/cli/.npmrc
