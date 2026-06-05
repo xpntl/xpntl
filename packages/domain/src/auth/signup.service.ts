@@ -1,7 +1,9 @@
 import { type PoolClient, withTransaction } from '@xpntl/db';
+import { notifyAdmin } from '../admin/notify.js';
 import { recordOnClient } from '../audit/audit.service.js';
 import { ConflictError, ValidationError } from '../errors.js';
 import { newId } from '../id.js';
+import { getOrCreateAccountOrgTx } from '../organizations/organization.service.js';
 import type { AccountRow, SessionRow, UserRow, WorkspaceRow } from '../types.js';
 import { hashPassword, verifyPassword } from './password.js';
 import { createSession, upgradeSession } from './session.service.js';
@@ -149,11 +151,18 @@ async function seedWorkspace(
     await client.query<AccountRow>('SELECT * FROM accounts WHERE id = $1', [input.accountId])
   ).rows[0]!;
 
+  // Every workspace is parented by the account's org (created on first use,
+  // with its free org-level subscription + owner membership). Created BEFORE
+  // the workspace so organization_id is set at insert time. See Org→Workspace.
+  const org = await getOrCreateAccountOrgTx(client, account.id, {
+    nameHint: account.display_name ?? input.workspaceName,
+  });
+
   const workspaceId = newId();
   const wsResult = await client
     .query<WorkspaceRow>(
-      'INSERT INTO workspaces (id, slug, name, key) VALUES ($1, $2, $3, $4) RETURNING *',
-      [workspaceId, input.workspaceSlug, input.workspaceName, input.workspaceKey],
+      'INSERT INTO workspaces (id, slug, name, key, organization_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [workspaceId, input.workspaceSlug, input.workspaceName, input.workspaceKey, org.id],
     )
     .catch((err: Error & { code?: string }) => {
       if (err.code === '23505') throw new ConflictError('Workspace slug or key already in use');
@@ -179,11 +188,6 @@ async function seedWorkspace(
   }
 
   await client.query('INSERT INTO issue_key_counters (workspace_id, last_key) VALUES ($1, 0)', [workspace.id]);
-
-  await client.query(
-    `INSERT INTO subscriptions (id, workspace_id, plan_id, status) VALUES ($1, $2, 'free', 'active') ON CONFLICT DO NOTHING`,
-    [newId(), workspace.id],
-  );
 
   await recordOnClient(client, {
     workspaceId: workspace.id,
@@ -216,7 +220,7 @@ export async function registerAccount(input: RegisterInput): Promise<RegisterRes
   validateEmail(input.email);
   validatePassword(input.password);
 
-  return withTransaction(async (client) => {
+  const result = await withTransaction(async (client) => {
     const account = await checkFoundingStatus(
       client,
       await resolveAccountForRegistration(client, input),
@@ -231,6 +235,8 @@ export async function registerAccount(input: RegisterInput): Promise<RegisterRes
 
     return { account, session, token };
   });
+  notifyAdmin({ kind: 'account.created', email: result.account.email, displayName: result.account.display_name });
+  return result;
 }
 
 /**
@@ -239,11 +245,18 @@ export async function registerAccount(input: RegisterInput): Promise<RegisterRes
 export async function createWorkspaceFromOnboarding(input: OnboardingInput): Promise<OnboardingResult> {
   validateWorkspaceFields(input);
 
-  return withTransaction(async (client) => {
+  const result = await withTransaction(async (client) => {
     const { workspace, user } = await seedWorkspace(client, input);
     await upgradeSession(client, input.sessionId, user.id, workspace.id);
     return { workspace, user };
   });
+  notifyAdmin({
+    kind: 'workspace.created',
+    name: result.workspace.name,
+    slug: result.workspace.slug,
+    ownerEmail: result.user.email,
+  });
+  return result;
 }
 
 /**
@@ -255,7 +268,7 @@ export async function signup(input: SignupInput): Promise<SignupResult> {
   validatePassword(input.password);
   validateWorkspaceFields(input);
 
-  return withTransaction(async (client) => {
+  const result = await withTransaction(async (client) => {
     const account = await checkFoundingStatus(
       client,
       await resolveAccountForRegistration(client, input),
@@ -286,6 +299,9 @@ export async function signup(input: SignupInput): Promise<SignupResult> {
 
     return { account, workspace, user, session, token };
   });
+  notifyAdmin({ kind: 'account.created', email: result.account.email, displayName: result.account.display_name });
+  notifyAdmin({ kind: 'workspace.created', name: result.workspace.name, slug: result.workspace.slug, ownerEmail: result.user.email });
+  return result;
 }
 
 function validateEmail(email: string): void {

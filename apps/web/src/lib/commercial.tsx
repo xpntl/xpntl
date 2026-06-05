@@ -14,3 +14,6 @@ export type CommercialRoute = {
 };
 
 export const commercialRoutes: CommercialRoute[] = [];
+
+export type IssueSidebarExtra = ComponentType<{ issueKey: string; issueId: string }>;
+export const issueSidebarExtras: IssueSidebarExtra[] = [];

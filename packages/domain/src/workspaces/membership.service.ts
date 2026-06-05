@@ -1,9 +1,10 @@
 import { getPool, withTransaction } from '@xpntl/db';
 import { recordOnClient } from '../audit/audit.service.js';
+import { createSession } from '../auth/session.service.js';
 import { ForbiddenError, NotFoundError, ValidationError } from '../errors.js';
 import { newId } from '../id.js';
+import { getOrCreateAccountOrgTx } from '../organizations/organization.service.js';
 import type { AuthContext, FullAuthContext, SessionRow, UserRow, WorkspaceRow } from '../types.js';
-import { createSession } from '../auth/session.service.js';
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,38}[a-z0-9]$/;
 const KEY_RE = /^[A-Z][A-Z0-9]{1,9}$/;
@@ -57,7 +58,9 @@ export async function listAccountWorkspaceMemberships(
       updated_at: row.updated_at,
     },
     isCurrent: row.workspace_id === ctx.workspace?.id,
-    isDefault: row.account_default_workspace_id != null && row.workspace_id === row.account_default_workspace_id,
+    isDefault:
+      row.account_default_workspace_id != null &&
+      row.workspace_id === row.account_default_workspace_id,
   }));
 }
 
@@ -263,11 +266,18 @@ export async function createWorkspaceForAccount(
   }
 
   return withTransaction(async (client) => {
+    // Parent the workspace under the account's existing org (every account has
+    // exactly one — reused here, so additional workspaces don't spawn new orgs).
+    // Created before the insert so organization_id is set (it is NOT NULL).
+    const org = await getOrCreateAccountOrgTx(client, ctx.account.id, {
+      nameHint: ctx.account.display_name ?? input.workspaceName,
+    });
+
     const workspaceId = newId();
     const wsResult = await client
       .query<WorkspaceRow>(
-        `INSERT INTO workspaces (id, slug, name, key) VALUES ($1, $2, $3, $4) RETURNING *`,
-        [workspaceId, input.workspaceSlug, input.workspaceName, input.workspaceKey],
+        `INSERT INTO workspaces (id, slug, name, key, organization_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+        [workspaceId, input.workspaceSlug, input.workspaceName, input.workspaceKey, org.id],
       )
       .catch((err: Error & { code?: string }) => {
         if (err.code === '23505') {

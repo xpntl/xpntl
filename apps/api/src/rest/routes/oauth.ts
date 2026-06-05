@@ -258,7 +258,24 @@ async function exchangeCodeForTokens(config: ProviderConfig, code: string, redir
     },
     body: new URLSearchParams(params),
   });
-  const tokenData = await tokenRes.json() as Record<string, unknown>;
+  const tokenData = (await tokenRes.json().catch(() => ({}))) as Record<string, unknown>;
+
+  // OAuth token endpoints signal failure via HTTP status and/or an `error`
+  // field in the JSON body. Without this check a failed exchange — e.g. Apple
+  // returning {"error":"invalid_client"} (bad client secret / wrong Services
+  // ID) or {"error":"invalid_grant"} (code reused or expired) — falls through
+  // and surfaces downstream as the misleading "missing id_token". Surface the
+  // provider's real reason so the cause is visible in the logs and the signin
+  // redirect. (No secrets are logged: on failure the body holds only error
+  // codes, and params/client_secret are never logged.)
+  if (!tokenRes.ok || typeof tokenData.error === 'string') {
+    const reason =
+      [tokenData.error, tokenData.error_description].filter(Boolean).join(': ') ||
+      `HTTP ${tokenRes.status}`;
+    console.error(`[oauth] token exchange failed (${new URL(config.tokenUrl).host}):`, reason);
+    throw new Error(`OAuth token exchange failed: ${reason}`);
+  }
+
   return { accessToken: tokenData.access_token as string | undefined, tokenData };
 }
 

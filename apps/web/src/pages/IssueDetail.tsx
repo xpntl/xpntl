@@ -17,6 +17,7 @@ import { TagChip } from '../components/TagChip';
 import { ReactionBar } from '../components/ReactionBar';
 import { RecurrenceEditor } from '../components/RecurrenceEditor';
 import { RelationCreator } from '../components/RelationCreator';
+import { issueSidebarExtras } from '../lib/commercial';
 import { extractMentionIds } from '../components/MentionSuggestion';
 import { RichTextEditor } from '../components/RichTextEditor';
 import { RichTextRenderer } from '../components/RichTextRenderer';
@@ -1673,6 +1674,10 @@ export function IssueDetailPage() {
                 />
               </div>
             </section>
+
+            {issueSidebarExtras.map((Extra, i) => (
+              <Extra key={i} issueKey={issue.key} issueId={issue.id} />
+            ))}
 
             <section style={panelStyle}>
               <SectionHeader title={`Sub-issues (${subIssues.length})`} />

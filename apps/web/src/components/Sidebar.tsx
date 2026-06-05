@@ -145,9 +145,17 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
           className={`flex items-center gap-[8px] h-[28px] mx-[6px] mb-[4px] rounded-xp-sm text-xp-muted bg-transparent border-0 cursor-pointer hover:bg-xp-layer hover:text-xp-ink ${collapsed ? 'justify-center px-0' : 'justify-start px-[10px]'}`}
         >
           <svg
-            width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor"
-            strokeWidth="1.4" aria-hidden
-            style={{ transform: collapsed ? 'rotate(180deg)' : 'none', transition: 'transform 120ms' }}
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            aria-hidden="true"
+            style={{
+              transform: collapsed ? 'rotate(180deg)' : 'none',
+              transition: 'transform 120ms',
+            }}
           >
             <path d="M7.5 2.5 L4 6 L7.5 9.5" />
           </svg>
@@ -186,8 +194,13 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
                 </div>
               </div>
               <svg
-                width="10" height="10" viewBox="0 0 10 10"
-                aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.2"
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.2"
                 className="text-xp-muted flex-none"
               >
                 <path d="M2.5 6 L5 3.5 L7.5 6" />
@@ -199,8 +212,14 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
           <WorkspaceMenu
             user={user}
             onClose={() => setWsMenuOpen(false)}
-            onSettings={() => { setWsMenuOpen(false); navigate('/settings/profile'); }}
-            onAdmin={() => { setWsMenuOpen(false); navigate('/admin'); }}
+            onSettings={() => {
+              setWsMenuOpen(false);
+              navigate('/settings/profile');
+            }}
+            onAdmin={() => {
+              setWsMenuOpen(false);
+              navigate('/admin');
+            }}
             onLogout={() => {
               void api.logout(token).catch(() => undefined);
               clearAll();
@@ -214,8 +233,14 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
               });
             }}
             memberships={workspaceOptions}
-            onCreateWorkspace={() => { setWsMenuOpen(false); navigate('/settings/workspaces'); }}
-            onAddWorkspace={() => { setWsMenuOpen(false); navigate('/settings/workspaces'); }}
+            onCreateWorkspace={() => {
+              setWsMenuOpen(false);
+              navigate('/settings/workspaces');
+            }}
+            onAddWorkspace={() => {
+              setWsMenuOpen(false);
+              navigate('/settings/workspaces');
+            }}
           />
         )}
       </div>
@@ -248,16 +273,25 @@ function FeedbackNavLink({ collapsed }: { collapsed: boolean }) {
         className={`w-[14px] inline-flex items-center justify-center ${selected ? 'text-xp-accent-strong' : 'text-xp-muted'}`}
         aria-hidden
       >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" role="img" aria-label="Feedback">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
+          role="img"
+          aria-label="Feedback"
+        >
           <title>Feedback</title>
           <path d="M2.5 3.5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5.5L2.5 11V8.5V3.5z" />
           <path d="M5 6h4M5 7.5h2.5" />
         </svg>
       </span>
       {!collapsed && (
-        <span className={`flex-1 ${selected ? 'font-semibold' : 'font-medium'}`}>
-          Feedback
-        </span>
+        <span className={`flex-1 ${selected ? 'font-semibold' : 'font-medium'}`}>Feedback</span>
       )}
     </Link>
   );
@@ -279,13 +313,27 @@ function InsightsNavLink({ collapsed }: { collapsed: boolean }) {
       `}
     >
       {selected && (
-        <span aria-hidden className="absolute left-0 top-[4px] bottom-[4px] w-[2px] bg-xp-accent-strong" />
+        <span
+          aria-hidden
+          className="absolute left-0 top-[4px] bottom-[4px] w-[2px] bg-xp-accent-strong"
+        />
       )}
       <span
         className={`w-[14px] inline-flex items-center justify-center ${selected ? 'text-xp-accent-strong' : 'text-xp-muted'}`}
         aria-hidden
       >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" role="img" aria-label="Insights">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
+          role="img"
+          aria-label="Insights"
+        >
           <title>Insights</title>
           <path d="M2 12V2" />
           <path d="M2 12h10" />
@@ -304,9 +352,14 @@ function InsightsNavLink({ collapsed }: { collapsed: boolean }) {
 
 function iconFor(id: NavId) {
   const p = {
-    width: 14, height: 14, viewBox: '0 0 14 14',
-    fill: 'none', stroke: 'currentColor', strokeWidth: 1.2,
-    strokeLinecap: 'square' as const, strokeLinejoin: 'miter' as const,
+    width: 14,
+    height: 14,
+    viewBox: '0 0 14 14',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.2,
+    strokeLinecap: 'square' as const,
+    strokeLinejoin: 'miter' as const,
   };
   if (id === 'inbox')
     return (
@@ -375,14 +428,18 @@ function ProjectsSection() {
           <span className="xp-meta cursor-pointer">PROJECTS</span>
         </Link>
         <span className="flex-1 h-px bg-xp-hairline" />
-        <Link to="/projects" className="no-underline text-xp-muted text-[14px] leading-none">+</Link>
+        <Link to="/projects" className="no-underline text-xp-muted text-[14px] leading-none">
+          +
+        </Link>
       </div>
       {projects.map((p) => {
         const isActive = activeKey === p.key;
         const isOpen = isActive || !collapsed.has(p.key);
         return (
           <div key={p.id}>
-            <div className={`flex items-center rounded-xp-sm hover:bg-xp-layer ${isActive ? 'bg-xp-layer' : ''}`}>
+            <div
+              className={`flex items-center rounded-xp-sm hover:bg-xp-layer ${isActive ? 'bg-xp-layer' : ''}`}
+            >
               <button
                 type="button"
                 onClick={() => toggle(p.key)}
@@ -391,10 +448,15 @@ function ProjectsSection() {
                 className="w-[16px] h-[var(--xp-nav-row-h,30px)] flex items-center justify-center flex-none text-xp-faint hover:text-xp-ink bg-transparent border-0 cursor-pointer"
               >
                 <svg
-                  width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1.4"
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
                   className="transition-transform duration-[var(--xp-dur-base)]"
                   style={{ transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}
-                  aria-hidden
+                  aria-hidden="true"
                 >
                   <path d="M2.5 1.5 L5.5 4 L2.5 6.5" />
                 </svg>
@@ -418,12 +480,36 @@ function ProjectsSection() {
             </div>
             {isOpen && (
               <div className="ml-[16px] border-l border-xp-hairline">
-                <ProjectSubNavLink to={`/p/${p.key}/board`} label="Board" current={location.pathname} />
-                <ProjectSubNavLink to={`/p/${p.key}/triage`} label="Triage" current={location.pathname} />
-                <ProjectSubNavLink to={`/p/${p.key}/docs`} label="Docs" current={location.pathname} />
-                <ProjectSubNavLink to={`/p/${p.key}/updates`} label="Updates" current={location.pathname} />
-                <ProjectSubNavLink to={`/p/${p.key}/archived`} label="Archived" current={location.pathname} />
-                <ProjectSubNavLink to={`/p/${p.key}/settings`} label="Settings" current={location.pathname} />
+                <ProjectSubNavLink
+                  to={`/p/${p.key}/board`}
+                  label="Board"
+                  current={location.pathname}
+                />
+                <ProjectSubNavLink
+                  to={`/p/${p.key}/triage`}
+                  label="Triage"
+                  current={location.pathname}
+                />
+                <ProjectSubNavLink
+                  to={`/p/${p.key}/docs`}
+                  label="Docs"
+                  current={location.pathname}
+                />
+                <ProjectSubNavLink
+                  to={`/p/${p.key}/updates`}
+                  label="Updates"
+                  current={location.pathname}
+                />
+                <ProjectSubNavLink
+                  to={`/p/${p.key}/archived`}
+                  label="Archived"
+                  current={location.pathname}
+                />
+                <ProjectSubNavLink
+                  to={`/p/${p.key}/settings`}
+                  label="Settings"
+                  current={location.pathname}
+                />
               </div>
             )}
           </div>
@@ -488,7 +574,8 @@ function RecentSection() {
 
   useEffect(() => {
     if (!token) return;
-    api.listRecentIssues(token, 5)
+    api
+      .listRecentIssues(token, 5)
       .then((r) => {
         setRecents(r.recentIssues);
         syncRecentIssues(r.recentIssues.map((i) => ({ key: i.issueKey, title: i.issueTitle })));
@@ -541,11 +628,16 @@ function SearchButton({ collapsed }: { collapsed: boolean }) {
         `}
       >
         <svg
-          width="14" height="14" viewBox="0 0 14 14"
-          fill="none" stroke="currentColor" strokeWidth="1.2"
-          strokeLinecap="square" strokeLinejoin="miter"
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
           className="flex-none"
-          aria-hidden
+          aria-hidden="true"
         >
           <circle cx="6" cy="6" r="3.8" />
           <path d="M9 9l2.5 2.5" />
@@ -562,8 +654,15 @@ function SearchButton({ collapsed }: { collapsed: boolean }) {
 }
 
 function WorkspaceMenu({
-  user, onClose, onSettings, onAdmin, onLogout,
-  onSwitchWorkspace, onCreateWorkspace, onAddWorkspace, memberships,
+  user,
+  onClose,
+  onSettings,
+  onAdmin,
+  onLogout,
+  onSwitchWorkspace,
+  onCreateWorkspace,
+  onAddWorkspace,
+  memberships,
 }: {
   user: User | null;
   onClose: () => void;
@@ -582,7 +681,10 @@ function WorkspaceMenu({
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) onClose();
     }
     function handleKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') { onClose(); e.preventDefault(); }
+      if (e.key === 'Escape') {
+        onClose();
+        e.preventDefault();
+      }
     }
     document.addEventListener('mousedown', handleClickAway);
     document.addEventListener('keydown', handleKey);
@@ -592,7 +694,8 @@ function WorkspaceMenu({
     };
   }, [onClose]);
 
-  const itemCls = 'flex items-center gap-[10px] w-full py-[6px] px-[12px] bg-transparent border-0 font-mono text-[12px] text-xp-ink cursor-pointer text-left rounded-xp-sm hover:bg-xp-layer';
+  const itemCls =
+    'flex items-center gap-[10px] w-full py-[6px] px-[12px] bg-transparent border-0 font-mono text-[12px] text-xp-ink cursor-pointer text-left rounded-xp-sm hover:bg-xp-layer';
 
   return (
     <div
@@ -601,12 +704,18 @@ function WorkspaceMenu({
     >
       {user && (
         <div className="py-[8px] px-[12px] flex items-center gap-[10px]">
-          <Avatar name={user.displayName ?? user.email} src={user.avatarUrl ?? undefined} size={24} />
+          <Avatar
+            name={user.displayName ?? user.email}
+            src={user.avatarUrl ?? undefined}
+            size={24}
+          />
           <div className="flex-1 min-w-0">
             <div className="text-[11.5px] font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
               {user.displayName ?? user.email}
             </div>
-            <div className="xp-meta mt-px">{user.email}</div>
+            <div className="xp-meta mt-px overflow-hidden text-ellipsis whitespace-nowrap">
+              {user.email}
+            </div>
           </div>
         </div>
       )}
@@ -627,23 +736,27 @@ function WorkspaceMenu({
                   className={`${itemCls} py-[8px] px-[10px] ${active ? 'bg-xp-layer' : ''}`}
                 >
                   {membership.workspace.avatarUrl ? (
-                    <Avatar name={membership.workspace.name} src={membership.workspace.avatarUrl} size={22} />
+                    <Avatar
+                      name={membership.workspace.name}
+                      src={membership.workspace.avatarUrl}
+                      size={22}
+                    />
                   ) : (
                     <div className="w-[22px] h-[22px] rounded-xp-sm bg-xp-layer inline-flex items-center justify-center text-[11px] font-bold flex-none">
                       {(membership.workspace.key?.[0] ?? 'X').toUpperCase()}
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <div className={`overflow-hidden text-ellipsis whitespace-nowrap ${active ? 'font-semibold' : 'font-medium'}`}>
+                    <div
+                      className={`overflow-hidden text-ellipsis whitespace-nowrap ${active ? 'font-semibold' : 'font-medium'}`}
+                    >
                       {membership.workspace.name}
                     </div>
-                    <div className="xp-meta mt-px">
+                    <div className="xp-meta mt-px overflow-hidden text-ellipsis whitespace-nowrap">
                       {(membership.user.displayName ?? membership.user.email).slice(0, 40)}
                     </div>
                   </div>
-                  {active && (
-                    <span className="text-xp-accent-strong font-bold text-[12px]">✓</span>
-                  )}
+                  {active && <span className="text-xp-accent-strong font-bold text-[12px]">✓</span>}
                 </button>
               );
             })}
@@ -653,7 +766,18 @@ function WorkspaceMenu({
       )}
 
       <button type="button" className={itemCls} onClick={onSettings}>
-        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" className="flex-none">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
+          className="flex-none"
+        >
           <circle cx="7" cy="7" r="2" />
           <path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.8 2.8l1 1M10.2 10.2l1 1M11.2 2.8l-1 1M3.8 10.2l-1 1" />
         </svg>
@@ -673,7 +797,18 @@ function WorkspaceMenu({
 
       {user?.isSuperAdmin && (
         <button type="button" className={itemCls} onClick={onAdmin}>
-          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" className="flex-none">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeLinecap="square"
+            strokeLinejoin="miter"
+            className="flex-none"
+          >
             <rect x="2" y="6" width="10" height="6" rx="1" />
             <path d="M4 6V4a3 3 0 0 1 6 0v2" />
           </svg>
@@ -690,7 +825,18 @@ function WorkspaceMenu({
       <div className="h-px bg-xp-hairline my-[4px]" />
 
       <button type="button" className={`${itemCls} text-xp-muted`} onClick={onLogout}>
-        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" className="flex-none">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
+          className="flex-none"
+        >
           <path d="M5 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2" />
           <path d="M9 10l3-3-3-3" />
           <path d="M12 7H5" />

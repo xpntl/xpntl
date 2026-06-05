@@ -24,3 +24,6 @@ infra/docker-compose/data
 .pnpm-store/
 .claude/
 apps/cli/.npmrc
+
+# Stripe quickstart sample (contains a hardcoded test key) — reference only.
+sample-code/

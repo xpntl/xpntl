@@ -18,7 +18,7 @@ const NAV = [
   { label: 'Audit Log', href: '/settings/audit', minRole: 'Admin' as const },
   { label: 'Notifications', href: '/settings/notifications' },
   { label: 'Plan & Billing', href: '/settings/billing', minRole: 'Admin' as const },
-  { label: 'Organizations', href: '/settings/organizations' },
+  { label: 'Organization', href: '/settings/organizations' },
 ];
 
 export function SettingsLayout({ children }: { children: ReactNode }) {

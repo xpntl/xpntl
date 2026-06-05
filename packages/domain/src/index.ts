@@ -4,7 +4,10 @@
  * The self-hostable build ships this file as `index.ts`. It is the commercial
  * barrel minus the hosted control plane:
  *   - `billing` is remapped to the open `gate` (unlimited / all features on)
- *   - `admin`, `license`, `social`, `feedback`, `organizations` are omitted
+ *   - `admin`, `license`, `social`, `feedback` are omitted
+ *   - `organizations` stays (the core Org→Workspace container; every workspace
+ *     has an org). Only its member-management *route* and the commercial
+ *     consolidated-billing on top are stripped.
  * Everything a self-hosted instance needs (incl. `harnessKeys` resolution +
  * creation, and user-facing `dataExport`) stays public.
  */
@@ -54,6 +57,7 @@ export * from './audit/activity.service.js';
 export * from './users/settings.service.js';
 export * as invites from './users/invite.service.js';
 export * from './workspaces/membership.service.js';
+export * as organizations from './organizations/organization.service.js';
 export * as agents from './agents/agent.service.js';
 export * as billing from './billing/gate.js';
 export * as harnessKeys from './billing/harness-key.service.js';
