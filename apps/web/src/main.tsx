@@ -6,9 +6,13 @@ import './index.css';
 
 // Theme is owned by `lib/theme.ts`, which sets `data-theme` on import.
 import './lib/theme';
+import { initTelemetry } from './lib/telemetry';
 const html = document.documentElement;
 if (!html.hasAttribute('data-density')) html.setAttribute('data-density', 'compact');
 if (!html.hasAttribute('data-focus-ring')) html.setAttribute('data-focus-ring', 'offset');
+
+// Hosted-only client telemetry (App Insights). No-op without VITE_APPINSIGHTS_CONNECTION_STRING.
+void initTelemetry();
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Missing #root');

@@ -1,3 +1,4 @@
+import './telemetry.js'; // first import: hooks instrumentation before other modules load
 import { processDueRecurrences, setBlobStore, webhooks } from '@xpntl/domain';
 import { createAzureBlobStore } from '@xpntl/storage';
 import { createApp } from './app.js';
@@ -11,8 +12,15 @@ const azContainer = process.env.AZURE_STORAGE_CONTAINER ?? 'workspace-storage';
 if (azConnStr) {
   setBlobStore(createAzureBlobStore({ connectionString: azConnStr, container: azContainer }));
 } else if (azAccountName) {
-  const apiOrigin = process.env.PUBLIC_API_URL ?? `http://localhost:${process.env.PORT_API ?? 4000}`;
-  setBlobStore(createAzureBlobStore({ accountName: azAccountName, container: azContainer, proxyBaseUrl: `${apiOrigin}/v1/files` }));
+  const apiOrigin =
+    process.env.PUBLIC_API_URL ?? `http://localhost:${process.env.PORT_API ?? 4000}`;
+  setBlobStore(
+    createAzureBlobStore({
+      accountName: azAccountName,
+      container: azContainer,
+      proxyBaseUrl: `${apiOrigin}/v1/files`,
+    }),
+  );
 }
 
 const PORT = Number(process.env.PORT_API ?? 4000);
@@ -68,7 +76,9 @@ async function webhookTick() {
 if (process.env.DISABLE_EMBEDDED_TICKS === 'true') {
   console.log('[xpntl/api] embedded worker ticks disabled (DISABLE_EMBEDDED_TICKS=true)');
 } else {
-  console.log('[xpntl/api] worker ticks enabled — recurrences every 60s, webhooks every 15s, social check every 60m');
+  console.log(
+    '[xpntl/api] worker ticks enabled — recurrences every 60s, webhooks every 15s, social check every 60m',
+  );
   recurrenceTick();
   setInterval(recurrenceTick, RECURRENCE_INTERVAL_MS);
   webhookTick();
