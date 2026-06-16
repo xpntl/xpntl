@@ -3,7 +3,7 @@
   "owner": { "name": "xpntl", "url": "https://xpntl.dev" },
   "metadata": {
     "description": "xpntl — the coordination layer for human + AI teams.",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
