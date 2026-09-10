@@ -21,9 +21,7 @@ bolted-on bots.
 
 ## Where's the code?
 
-Not in this repository. xpntl is **source-available on request**. Any xpntl user can ask
-for the source, on any plan including Free, and we send it to you directly. It is not
-published publicly.
+Not in this repository. xpntl is **source-available on request**. Any xpntl user can submit a request for the source code and we will share it. It is not published publicly.
 
 To request it, email [use@xpntl.ai](mailto:use@xpntl.ai?subject=Source%20request) from
 the address on your xpntl account. More at [xpntl.ai/source](https://xpntl.ai/source/).
